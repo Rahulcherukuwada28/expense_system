@@ -19,6 +19,16 @@ class Expense(models.Model):
         choices=STATUS_CHOICES,
         default='PENDING'
     )
+
+    # 👇 ADD THIS
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="approved_expenses"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

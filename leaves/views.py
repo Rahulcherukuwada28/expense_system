@@ -12,19 +12,21 @@ class LeaveListCreate(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        # Manager sees all leave requests
         if request.user.role == "MANAGER":
-            leaves = Leave.objects.all()
+            leaves = Leave.objects.all().order_by("-id")
+        # Employee sees only their leaves
         else:
-            leaves = Leave.objects.filter(user=request.user)
+            leaves = Leave.objects.filter(user=request.user).order_by("-id")
 
         serializer = LeaveSerializer(leaves, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        # 🔒 ROLE CHECK
+        # Only employees can apply leave
         if request.user.role != "EMPLOYEE":
             return Response(
-                {"detail": "Only employees can apply for leave"},
+                {"detail": "Only employees can apply leave"},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -32,7 +34,9 @@ class LeaveListCreate(APIView):
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LeaveApprove(APIView):
     permission_classes = [IsAuthenticated, IsManager]
@@ -41,7 +45,10 @@ class LeaveApprove(APIView):
         try:
             leave = Leave.objects.get(id=pk)
         except Leave.DoesNotExist:
-            return Response({"error": "Leave not found"}, status=404)
+            return Response(
+                {"error": "Leave not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         if leave.status != "PENDING":
             return Response(
@@ -53,8 +60,10 @@ class LeaveApprove(APIView):
 
         if action == "approve":
             leave.status = "APPROVED"
+            leave.approved_by = request.user   # ✅ SAVE MANAGER
         elif action == "reject":
             leave.status = "REJECTED"
+            leave.approved_by = request.user   # ✅ SAVE MANAGER
         else:
             return Response(
                 {"error": "Invalid action"},
@@ -62,4 +71,10 @@ class LeaveApprove(APIView):
             )
 
         leave.save()
-        return Response({"status": leave.status})
+        return Response(
+            {
+                "status": leave.status,
+                "approved_by": request.user.username
+            },
+            status=status.HTTP_200_OK
+        )
