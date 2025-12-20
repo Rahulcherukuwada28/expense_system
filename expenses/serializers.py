@@ -1,22 +1,20 @@
 from rest_framework import serializers
-from .models import Expense
+from .models import Expense   # means expenses.models.Expense
 
-# class ExpenseSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Expense
-#         fields = '__all__'
-#         read_only_fields = ['user', 'status']
 class ExpenseSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source="user.username", read_only=True)
+    employee_name = serializers.ReadOnlyField(source='user.username')
+    approved_by_name = serializers.ReadOnlyField(source='approved_by.username')
 
     class Meta:
         model = Expense
         fields = [
-            "id",
-            "username",
-            "amount",
-            "category",
-            "description",
-            "status",
-            "created_at",
+            'id',
+            'amount',
+            'category',
+            'description',
+            'status',
+            'employee_name',
+            'approved_by_name',
+            'created_at',
+            'approved_by',
         ]

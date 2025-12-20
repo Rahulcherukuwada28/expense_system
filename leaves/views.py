@@ -12,21 +12,18 @@ class LeaveListCreate(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Manager sees all leave requests
         if request.user.role == "MANAGER":
-            leaves = Leave.objects.all().order_by("-id")
-        # Employee sees only their leaves
+            leaves = Leave.objects.all()
         else:
-            leaves = Leave.objects.filter(user=request.user).order_by("-id")
+            leaves = Leave.objects.filter(user=request.user)
 
         serializer = LeaveSerializer(leaves, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        # Only employees can apply leave
         if request.user.role != "EMPLOYEE":
             return Response(
-                {"detail": "Only employees can apply leave"},
+                {"detail": "Only employees can apply for leave"},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -45,10 +42,7 @@ class LeaveApprove(APIView):
         try:
             leave = Leave.objects.get(id=pk)
         except Leave.DoesNotExist:
-            return Response(
-                {"error": "Leave not found"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({"error": "Leave not found"}, status=404)
 
         if leave.status != "PENDING":
             return Response(
@@ -60,10 +54,10 @@ class LeaveApprove(APIView):
 
         if action == "approve":
             leave.status = "APPROVED"
-            leave.approved_by = request.user   # ✅ SAVE MANAGER
+            leave.approved_by = request.user
         elif action == "reject":
             leave.status = "REJECTED"
-            leave.approved_by = request.user   # ✅ SAVE MANAGER
+            leave.approved_by = request.user
         else:
             return Response(
                 {"error": "Invalid action"},
@@ -71,10 +65,4 @@ class LeaveApprove(APIView):
             )
 
         leave.save()
-        return Response(
-            {
-                "status": leave.status,
-                "approved_by": request.user.username
-            },
-            status=status.HTTP_200_OK
-        )
+        return Response({"status": leave.status})

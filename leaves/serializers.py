@@ -1,22 +1,20 @@
 from rest_framework import serializers
-from .models import Leave
+from .models import Leave   # means leaves.models.Leave
 
-# class LeaveSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Leave
-#         fields = '__all__'
-#         read_only_fields = ['user', 'status']
 class LeaveSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source="user.username", read_only=True)
+    employee_name = serializers.ReadOnlyField(source='user.username')
+    approved_by_name = serializers.ReadOnlyField(source='approved_by.username')
 
     class Meta:
         model = Leave
         fields = [
-            "id",
-            "username",
-            "start_date",
-            "end_date",
-            "reason",
-            "status",
-            "created_at",
+            'id',
+            'start_date',
+            'end_date',
+            'reason',
+            'status',
+            'employee_name',
+            'approved_by_name',
+            'created_at',
+            'approved_by',
         ]
