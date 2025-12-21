@@ -68,4 +68,41 @@ class ExpenseApprove(APIView):
         expense.save()
         return Response({"status": expense.status})
 
+def destroy(self, request, *args, **kwargs):
+    instance = self.get_object()
 
+    # ❌ Block delete if not pending
+    if instance.status != "PENDING":
+        return Response(
+            {"error": "Only PENDING expenses can be deleted"},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    self.perform_destroy(instance)
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ExpenseDelete(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            expense = Expense.objects.get(id=pk)
+        except Expense.DoesNotExist:
+            return Response({"error": "Expense not found"}, status=404)
+
+        # 🔒 Only owner can delete
+        if expense.user != request.user:
+            return Response(
+                {"error": "You cannot delete this expense"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # 🔒 Only PENDING can be deleted
+        if expense.status != "PENDING":
+            return Response(
+                {"error": "Cannot delete processed expense"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        expense.delete()
+        return Response({"message": "Expense deleted"}, status=status.HTTP_204_NO_CONTENT)
