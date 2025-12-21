@@ -1,53 +1,70 @@
-# Expense & Leave Management System
+🚀 Employee Expense & Leave Management System
 
-A full-stack web application that allows employees to apply for expenses and leaves, and managers to review, approve, or reject them using role-based access control.
+A role-based full-stack web application where employees submit expenses and leave requests, and managers review, approve, or reject them with full audit tracking.
 
----
+✨ Features
+👤 Employee
 
-## 🚀 Features
+🔐 Login / Signup
 
-### 👤 Employee
-- Login using JWT authentication
-- Apply for expenses (amount, category, description)
-- Apply for leaves (start date, end date, reason)
-- View own expense and leave status
+🧾 Apply for expenses
 
-### 👨‍💼 Manager
-- Login with manager role
-- View all employee expenses and leaves
-- Approve or reject requests
-- See employee name with each request
+🏖️ Apply for leaves
 
-### 🔐 Security
-- JWT-based authentication
-- Role-based access control (Employee / Manager)
-- Backend permission enforcement (employees cannot approve via API)
+📊 Track request status
 
----
+👀 See which manager approved/rejected
 
-## 🛠 Tech Stack
+👨‍💼 Manager
 
-### Backend
-- Python
-- Django
-- Django REST Framework
-- JWT Authentication (SimpleJWT)
-- SQLite (development)
+📂 View all employee requests
 
-### Frontend
-- React (Vite)
-- Axios
-- Basic CSS
+✅ Approve / ❌ Reject expenses & leaves
 
----
+🕒 Audit trail (approved by + time)
 
-## 📂 Project Structure
-expense_system/
-│
-├── core/ # Django project settings
-├── users/ # Custom user model & roles
-├── expenses/ # Expense module
-├── leaves/ # Leave module
-├── frontend/ # React frontend
-├── .gitignore
-└── README.md
+🛠️ Tech Stack
+
+🐍 Backend: Django, Django REST Framework, JWT
+
+⚛️ Frontend: React, Axios
+
+🗄️ Database: SQLite (development)
+
+🔗 Core APIs
+POST /api/token/                 # Login
+GET  /api/users/me/              # User profile
+
+GET  /api/expenses/
+POST /api/expenses/
+POST /api/expenses/<id>/action/
+
+GET  /api/leaves/
+POST /api/leaves/
+POST /api/leaves/<id>/action/
+
+🌟 Highlights
+
+🔒 Role-based access (Employee vs Manager)
+
+🪪 JWT authentication
+
+🧾 Approval audit trail
+
+🧹 Clean Git workflow with .gitignore
+
+▶️ Run Locally
+Backend
+python manage.py migrate
+python manage.py runserver
+
+Frontend
+npm install
+npm run dev
+
+👨‍💻 Author
+
+Rahul Cherukuwada
+💻 Python Full-Stack Developer
+
+⭐ If you like this project, give it a star!
