@@ -1,70 +1,99 @@
 🚀 Employee Expense & Leave Management System
 
-A role-based full-stack web application where employees submit expenses and leave requests, and managers review, approve, or reject them with full audit tracking.
+A role-based full-stack application for managing employee expenses and leave requests with manager approvals and audit tracking.
 
-✨ Features
+👥 User Roles
+
 👤 Employee
 
-🔐 Login / Signup
-
-🧾 Apply for expenses
-
-🏖️ Apply for leaves
-
-📊 Track request status
-
-👀 See which manager approved/rejected
+    🔐 Login / Signup
+    
+    🧾 Apply for expenses
+    
+    🏖️ Apply for leaves
+    
+    📊 Track request status
+    
+    👀 See which manager approved or rejected
 
 👨‍💼 Manager
 
-📂 View all employee requests
+    📂 View all employee requests
+    
+    ✅ Approve expenses & leaves
+    
+    ❌ Reject expenses & leaves
+    
+    🕒 View approval audit trail
 
-✅ Approve / ❌ Reject expenses & leaves
+✨ Key Features
 
-🕒 Audit trail (approved by + time)
+    🔒 Role-based access control
+    
+    🪪 JWT authentication
+    
+    🧾 Approval audit trail (who & when)
+    
+    📱 Clean and responsive UI
+    
+    🧹 Secure Git setup with .gitignore
 
 🛠️ Tech Stack
+Backend
 
-🐍 Backend: Django, Django REST Framework, JWT
+    🐍 Python
+    
+    🌐 Django
+    
+    🔁 Django REST Framework
+    
+    🔐 JWT Authentication
 
-⚛️ Frontend: React, Axios
+Frontend
 
-🗄️ Database: SQLite (development)
+    ⚛️ React
+    
+    🔄 Axios
 
-🔗 Core APIs
-POST /api/token/                 # Login
-GET  /api/users/me/              # User profile
+Database
 
-GET  /api/expenses/
-POST /api/expenses/
-POST /api/expenses/<id>/action/
+    🗄️ SQLite (development)
 
-GET  /api/leaves/
-POST /api/leaves/
-POST /api/leaves/<id>/action/
+🔗 Core API Endpoints
+    Authentication
+    POST /api/token/
+    GET  /api/users/me/
 
-🌟 Highlights
+Expenses
+    GET  /api/expenses/
+    POST /api/expenses/
+    POST /api/expenses/<id>/action/
 
-🔒 Role-based access (Employee vs Manager)
-
-🪪 JWT authentication
-
-🧾 Approval audit trail
-
-🧹 Clean Git workflow with .gitignore
+Leaves
+    GET  /api/leaves/
+    POST /api/leaves/
+    POST /api/leaves/<id>/action/
 
 ▶️ Run Locally
 Backend
-python manage.py migrate
-python manage.py runserver
+    python manage.py migrate
+    python manage.py runserver
 
 Frontend
-npm install
-npm run dev
+    npm install
+    npm run dev
+
+🔒 Security Notes
+
+    ❌ No secrets pushed to GitHub
+    
+    🧾 .env, db.sqlite3, venv/ ignored
+    
+    🔐 Private repository supported
 
 👨‍💻 Author
 
-Rahul Cherukuwada
-💻 Python Full-Stack Developer
+    Rahul Cherukuwada
+    💻 Python Full-Stack Developer
 
-⭐ If you like this project, give it a star!
+⭐ Star the repo if you find it useful
